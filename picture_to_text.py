@@ -7,7 +7,7 @@ import requests
 import numpy as np
 
 model = Qwen_72B_Instruct
-model1 = Deepseek_V3
+model1 = Deepseek_V3 
 
 def picture_to_text(img):
     agent = ChatAgent(model=model,output_language='zh')
