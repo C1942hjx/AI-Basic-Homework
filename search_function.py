@@ -11,10 +11,13 @@ model = Deepseek_R1
 
 def Google_search(query, num_results): # google 搜索
     url = f"https://www.googleapis.com/customsearch/v1?key={GOOGLE_API_KEY}&cx={SEARCH_ENGINE_ID}&q={query}&num={num_results}"
-    response = requests.get(url,timeout=5)
     search_result=' '
-    if response.ok : search_result =response.text
-    return search_result
+    try:
+        response = requests.get(url,timeout=5)
+        if response.ok : search_result =response.text
+        return search_result
+    except:
+        return search_result
 
 def Wiki_search_author(author_name): # 维基百科搜索作者
     wikipedia.set_lang("zh")
