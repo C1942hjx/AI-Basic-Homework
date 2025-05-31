@@ -7,7 +7,6 @@ import wikipedia
 
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 SEARCH_ENGINE_ID = os.getenv("SEARCH_ENGINE_ID")
-
 model = Deepseek_R1
 
 def Google_search(query, num_results): # google 搜索
