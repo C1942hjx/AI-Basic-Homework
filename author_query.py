@@ -1,4 +1,4 @@
-# 作者信息查询
+# 作者信息查询 
 from camel.agents import ChatAgent
 from model_base import Deepseek_R1
 from search_function import Google_search,Openlibrary_search_author,Wiki_search_author
