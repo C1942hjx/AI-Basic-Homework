@@ -3,11 +3,10 @@ from camel.agents import ChatAgent
 from camel.messages import BaseMessage
 from paddleocr import PaddleOCR
 from model_base import Deepseek_V3,Qwen_72B_Instruct
-import requests
 import numpy as np
 
-model = Qwen_72B_Instruct
-model1 = Deepseek_V3 
+model = Qwen_72B_Instruct()
+model1 = Deepseek_V3()
 
 def picture_to_text(img):
     agent = ChatAgent(model=model,output_language='zh')

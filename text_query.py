@@ -3,7 +3,7 @@ from camel.agents import ChatAgent
 from model_base import Deepseek_R1
 from search_function import Google_search
 
-model = Deepseek_R1
+model = Deepseek_R1()
 
 def Text_query(user_question):
     user_question = input()
