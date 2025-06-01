@@ -2,6 +2,7 @@
 from camel.agents import ChatAgent
 from camel.messages import BaseMessage
 from paddleocr import PaddleOCR
+
 from model_base import Deepseek_V3,Deepseek_R1,Qwen_VL_72B_Instruct
 from PIL import Image
 import numpy as np
@@ -66,6 +67,7 @@ print(str(result))
     answer = '用户文段：' + content_3 + '  助手描述：' + response.msgs[0].content
 
     system_msg_2 = "这段话里有用户文段和助手描述，你需要根据助手描述修饰用户文段，如果用户文段比较完整就不需要进行修饰，要检查哪些是编者注释的内容（特别是标注了的引用文章）并全部删除，尽最大可能保持用户文段的原文，可以根据助手描述在末尾添加需要补充的信息。"
+
     chat_agent_2 = ChatAgent(model=model1,system_message=system_msg_2,output_language='zh')
     question_2 = answer
     response_2 = chat_agent_2.step(question_2)
