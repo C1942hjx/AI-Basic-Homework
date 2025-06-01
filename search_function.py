@@ -39,7 +39,9 @@ def Wiki_search_author(author_name): # 维基百科搜索作者
         except :
             search_ = ' '
 
-        if len(search_)>12000 : search = search_[:12000]
+
+        if len(search_)>10000 : search = search_[:10000]
+
         else : search = search_
         return search
     except :

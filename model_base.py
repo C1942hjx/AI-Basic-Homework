@@ -39,6 +39,17 @@ def Qwen_72B_Instruct ():
         model_config_dict={"max_tokens":4000}
     )
 
+
+def Qwen_VL_72B_Instruct ():
+    return ModelFactory.create(
+        model_platform=ModelPlatformType.OPENAI_COMPATIBLE_MODEL,
+        model_type="Qwen/Qwen2.5-VL-72B-Instruct",
+        url=qwen_url,
+        api_key=qwen_api_key,
+        model_config_dict={"max_tokens":4000}
+    )
+
+
 def Qwen3_8B ():
     return ModelFactory.create(
         model_platform=ModelPlatformType.OPENAI_COMPATIBLE_MODEL,
