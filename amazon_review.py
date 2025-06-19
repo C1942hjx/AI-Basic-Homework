@@ -11,8 +11,8 @@ model2=Deepseek_V3()
 # 创建并初始化一个向量数据库 (以QdrantStorage为例)
 from camel.storages.vectordb_storages import QdrantStorage
 
-# Amazon 评论数据集 含 360000+ 本书籍评论信息
-# 每本书随机选取 2 条评论
+# Amazon 评论数据集 含 360000+ 条书籍评论信息，包括 200000+ 本书籍
+# 每本书随机选取至多 2 条评论，附带书籍名称和评分，删去了用户名称等信息
 
 def VectorSearch(query,top_k=8,id=0):
     
