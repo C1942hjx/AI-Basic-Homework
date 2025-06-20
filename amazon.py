@@ -14,7 +14,7 @@ from camel.storages.vectordb_storages import QdrantStorage
 # Amazon 数据集 含 210000+ 本书籍信息
 # 图书元数据： 书名、作者、出版社、出版日期、书籍描述、书籍类别
 
-def VectorSearch(query,top_k=8,id=0):
+def VectorSearch(query,top_k=10,id=0):
     
     vector_storage = QdrantStorage(
         vector_dim=embedding_model.get_output_dim(),
@@ -27,11 +27,11 @@ def VectorSearch(query,top_k=8,id=0):
 
     return results
 
-def Storagequery(query,top_k=8):
+def Storagequery(query,top_k=10):
     
     results=VectorSearch(query,top_k=top_k,id=0)
 
-    for id in range(1,5):
+    for id in range(1,12):
         results2=VectorSearch(query,top_k=top_k,id=id)
         for i in range(0,top_k) :
             if results2[i]["similarity score"] > results[top_k-1]["similarity score"] :
@@ -48,7 +48,7 @@ def Storagequery(query,top_k=8):
     
     return results_string
 
-def AmazonSearch(query,top_k=8):
+def AmazonSearch(query,top_k=10):
 
     #提取关键信息
 
@@ -61,7 +61,7 @@ def AmazonSearch(query,top_k=8):
 
     #向量数据集搜索
 
-    print("正在进行搜索...")
+    print("正在进行搜索，由于数据较多，这可能需要一些时间...")
 
     results_string=Storagequery(res,top_k=top_k)
     
