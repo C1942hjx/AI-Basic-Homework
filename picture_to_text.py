@@ -15,6 +15,8 @@ model1 = Deepseek_R1()
 model2 = Deepseek_V3()
 
 def Picture_to_text(img_path_):
+    print("正在将图片转为文字...")
+    
     img_path = str(Path(img_path_))
     img = Image.open(img_path)
     img_np = np.array(img)
