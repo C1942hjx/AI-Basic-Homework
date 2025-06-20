@@ -1,7 +1,11 @@
+import logging
+logging.getLogger("torch.distributed.elastic.multiprocessing").setLevel(logging.ERROR)
+
 from PIL import Image
 from picture_to_text import Picture_to_text
 from text_query import Text_query
 from author_query import Author_query
+from recommend_books import Recommend_books
 
 print("\n您好，我是一个 📚 书籍推荐助手 📚 \n")
 
@@ -50,12 +54,11 @@ while True:
         criteria = {
             "text": input("相关文段: "),
             "author": input("偏爱作者: "),
-            "genre": input("体裁偏好(如'科幻/悬疑/爱情/历史'): "),
-            "purpose": input("其它描述（内容描绘/阅读目的/地域划分/历史时期）: ")
+            "purpose": input("其它描述（体裁偏好/内容描绘/阅读目的）: ")
         }
         
-        # recommended = Recommend_books(criteria)
-        # print(recommended)
+        recommended = Recommend_books(criteria)
+        print(recommended)
     elif choice == "0":
         break
     else:
