@@ -11,12 +11,15 @@ model = Deepseek_V3()
 
 def Google_search(query, num_results): # google 搜索
     url = f"https://www.googleapis.com/customsearch/v1?key={GOOGLE_API_KEY}&cx={SEARCH_ENGINE_ID}&q={query}&num={num_results}"
+    url_= f"https://www.googleapis.com/customsearch/v1?key={GOOGLE_API_KEY}&cx={SEARCH_ENGINE_ID}&q=\"{query}\"&num={num_results}"
     search_result=' '
     try:
         response = requests.get(url,timeout=5)
-        if response.ok : search_result =response.text
+        res2=requests.get(url_,timeout=5)
+        if response.ok and res2.ok : search_result=response.text+res2.text
         return search_result
-    except:
+    except: 
+        print("google API failed")
         return search_result
 
 def Wiki_search_author(author_name): # 维基百科搜索作者

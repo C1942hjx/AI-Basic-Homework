@@ -1,6 +1,7 @@
 from camel.agents import ChatAgent
 from model_base import Deepseek_R1,Deepseek_V3
 from goodreads import GoodreadsSearch
+from goodreads2 import Goodreads2Search
 from amazon import AmazonSearch
 from amazon_review import AmazonReviewSearch
 from text_query import Text_query1,Text_query2
@@ -17,11 +18,21 @@ def Recommend_books(criteria):
     search_3=""
     search_4=""
     search_4 = Text_query2(str(criteria))
-    print(search_4)
-    search_2 = GoodreadsSearch(str(criteria),3)
+#    print(search_4)
+    search_2 = Goodreads2Search(str(criteria),3)
     search_3 = AmazonSearch(str(criteria),3)
     text = search_4 + "\n" + search_2 + "\n" + search_3
     search_1 = Text_query1(str(criteria),text)
+
+    system_msg_5 = "你是一个敏感词屏蔽器，告诉你用户提供的信息和网络搜索结果，你需要判断这些内容是否是无意义内容或属于敏感内容，如果不是无意义内容也不属于中国意义下的敏感或反动，返回数字\"1\"，否则返回数字\"0\"，注意回答中除了数字1或0不能含有任何冗余信息。"
+    chat_agent_5 = ChatAgent(model=model,system_message=system_msg_5,output_language='zh')
+    question_5 = "用户提供的信息：" +user_question + "\n搜索结果：" + search_1
+    response_5 = chat_agent_5.step(question_5)
+    content_5=response_5.msgs[0].content
+    if content_5=="0":
+        print("您的输入是无意义内容或存在敏感信息，暂时无法回答。")
+        return ""
+    
     lenn = len(search_1)
     ls=cnt=0
     lst=[]
