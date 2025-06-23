@@ -2,7 +2,7 @@
 from camel.agents import ChatAgent
 
 from model_base import Deepseek_R1
-from search_function import Google_search,Openlibrary_search_author,Wiki_search_author
+from search_function import Google_search,Openlibrary_search_author,Wiki_search_author,Get
 
 model = Deepseek_R1()
 from model_base import Deepseek_V3
@@ -29,12 +29,11 @@ def Author_query(author_name):
     
     print("正在整理搜索结果...")
 
-    system_msg_1 = "你是一个作家，告诉你一位作者的资料和他写作的书籍，你需要结合作者的写作内容，用相似的风格向读者介绍这位作者，在激起读者对这位作者的兴趣的同时介绍的也要丰富具体，清晰描绘了这位作者基本信息，成就，创作风格，代表作品，生平及影响，可以从文学背景与成长经历，创作理念与思想深度，写作技巧与风格独特性这几个角度介绍。在介绍完后，列出几本最推荐的这位作者的著作，并大致描述每本著作的内容。在最后对和这位作者相关或相似的一些作者进行一些拓展介绍，要时刻注意语言的风格要贴近作者的领域。注意如果出现了在中国意义下的反动或敏感词汇，需要进行屏蔽并抨击。"
-    
-    chat_agent_1 = ChatAgent(model=model,system_message=system_msg_1,output_language='zh')
+    system_msg_1 = "你是一个作家，告诉你一位作者的资料和他写作的书籍，你需要结合作者的写作内容，用相似的风格向读者介绍这位作者，在激起读者对这位作者的兴趣的同时介绍的也要丰富具体，清晰描绘了这位作者基本信息，成就，创作风格，代表作品，生平及影响，可以从文学背景与成长经历，创作理念与思想深度，写作技巧与风格独特性这几个角度介绍。在介绍完后，列出几本最推荐的这位作者的著作，并大致描述每本著作的内容。在最后对和这位作者相关或相似的一些作者进行一些拓展介绍，要时刻注意语言的风格要贴近作者的领域。注意如果出现了在中国意义下的反动或敏感词汇，需要进行屏蔽并抨击。"    
     question_1 = "基本资料：" +author_name +" "+ search_3 + " " + search_1 + "   写作的书籍：" + search_2
-    response_1 = chat_agent_1.step(question_1)
-    content_1=response_1.msgs[0].content
+    content_1 = Get(model,system_msg_1,'zh',question_1,1)
+    if content_1 == "":
+        return ""
 
     return content_1
 

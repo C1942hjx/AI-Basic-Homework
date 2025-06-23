@@ -2,6 +2,7 @@ from camel.embeddings import SentenceTransformerEncoder
 from camel.retrievers import VectorRetriever
 from model_base import Deepseek_R1,Deepseek_V3
 from camel.agents import ChatAgent
+from search_function import Get
 
 embedding_model=SentenceTransformerEncoder(model_name='e5-small-v2')
 
@@ -55,9 +56,9 @@ def AmazonSearch(query,top_k=10):
     print("正在准备...")
 
     msg1="你是一个书籍推荐助手，给出用户的问题，请提取出关键信息并整理，注意书籍名称、书籍特征、书籍类别等信息，接下来需要在 Amazon 向量数据集中进行检索，请用**书籍或作者所在国家的语言**和英语分别输出，同时**不要输出除关键词以外多余的内容干扰向量信息检索**"
-    agent1=ChatAgent(model=model,system_message=msg1)
-    response1=agent1.step(query)
-    res=response1.msgs[0].content
+    res = Get(model,msg1,'none',query,1)
+    if res == "":
+        return ""
 
     #向量数据集搜索
 
@@ -70,9 +71,9 @@ def AmazonSearch(query,top_k=10):
     print("正在整理搜索结果...")
 
     msg2="你是一个书籍推荐助手，给出询问以及在 Amazon 向量数据集中的检索结果，需要整理检索结果，提取答案，注意过滤掉无用或者错误的信息，避免重复的信息，回答用户"
-    question="用户的问题是："+query+" "+"搜搜结果是：" + results_string
-    agent2=ChatAgent(model=model2,system_message=msg2,output_language='zh')
-
-    response2 = agent2.step(question)
-    return response2.msgs[0].content
+    question="用户的问题是："+query+" "+"搜索结果是：" + results_string
+    res = Get(model2,msg2,'zh',question,2)
+    if res == "":
+        return ""
+    return res
 

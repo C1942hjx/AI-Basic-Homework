@@ -9,6 +9,37 @@ GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 SEARCH_ENGINE_ID = os.getenv("SEARCH_ENGINE_ID")
 model = Deepseek_V3()
 
+def Get(modell,system_msg,output_lan,question,id):
+    while True:
+        try:
+            if output_lan == 'none':
+                chat_agent_1 = ChatAgent(model=modell,system_message=system_msg)
+            else :
+                chat_agent_1 = ChatAgent(model=modell,system_message=system_msg,output_language=output_lan)
+            response_1 = chat_agent_1.step(question)
+            content_1=response_1.msgs[0].content
+            return content_1
+        except:
+            if id == 1:
+                print("调用 Deepseek-R1 API 失败，若需要继续重试请输入 1，若需要退出此次查询请输入 0")
+            elif id == 2:
+                print("调用 Deepseek-V3 API 失败，若需要继续重试请输入 1，若需要退出此次查询请输入 0")
+            else:
+                print("调用 Qwen-VL-72B-Instruct 图像模型 API 失败，若需要继续重试请输入 1，若需要退出此次查询请输入 0")
+            fl=0
+            while True :
+                choice = input("请输入选项数字: ").strip()
+                if choice == "1":
+                    print("正在进行重试...")
+                    break
+                elif choice == '0':
+                    fl=1
+                    break
+                else :
+                    print("无效输入，请重新选择")
+            if fl == 1:
+                return ""
+
 def Google_search(query, num_results): # google 搜索
     url = f"https://www.googleapis.com/customsearch/v1?key={GOOGLE_API_KEY}&cx={SEARCH_ENGINE_ID}&q={query}&num={num_results}"
     url_= f"https://www.googleapis.com/customsearch/v1?key={GOOGLE_API_KEY}&cx={SEARCH_ENGINE_ID}&q=\"{query}\"&num={num_results}"
