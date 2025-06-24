@@ -5,7 +5,7 @@ from goodreads2 import Goodreads2Search
 from amazon import AmazonSearch
 from amazon_review import AmazonReviewSearch
 from text_query import Text_query1,Text_query2
-from search_function import Get
+from search_function import Get,Getst
 
 model=Deepseek_V3()
 model1=Deepseek_R1()
@@ -104,8 +104,4 @@ def Recommend_books(criteria):
     
     msg4="你是书籍推荐员，给定5本书，你需要根据书籍描述为这5本书编撰推荐理由，你只需要输出这5本书和他们的推荐理由，理由里面不应该包含评分，而更应该围绕书籍描述展开，别的信息全都不要输出"
     query = "5本书："+ res + "\n书籍描述："+ str(criteria)
-    res=Get(model,msg4,'none',query,2)
-    if res == "":
-        return ""
-    
-    return res
+    Getst(model,msg4,'none',query,2)
