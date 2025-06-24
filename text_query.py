@@ -1,7 +1,7 @@
 # 给定文段查询出自哪本书
 from camel.agents import ChatAgent
 from model_base import Deepseek_R1,Deepseek_V3
-from search_function import Google_search,Get
+from search_function import Google_search,Get,Getst
 
 model = Deepseek_R1()
 model1 = Deepseek_V3()
@@ -29,11 +29,7 @@ def Text_query(user_question):
 
     system_msg_2 = "你是一个审查员，图书检索助手给出了10本和用户给的文段最符合的书并给出了理由，你的目标是按照文段是否原样出现在书籍中将这几本书排序，你需要按照推荐顺序给出这5本书，你不需要给出排除的理由，你只需要给出这5本书和对这5本书推荐的理由，别的任何消息都不要输出。"
     question_2 = "用户给的文段：" + user_question + "   图书检索助手的回答：" + content_1
-    content_2=Get(model1,system_msg_2,'zh',question_2,2)
-    if content_2 == "":
-        return ""
-
-    return content_2
+    Getst(model1,system_msg_2,'zh',question_2,2)
 
 def Text_query1(user_question,text):
     print("正在进行搜索...")

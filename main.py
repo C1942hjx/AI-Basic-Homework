@@ -38,15 +38,12 @@ while True:
         elif fl == 2 :
             print("无效输入，请重新选择")
         else :
-#            print(text)
-            books = Text_query(text)
-            print(books)
+            Text_query(text)
     
     elif choice == "2":
         # 作家查询功能
         author = input("请输入作家姓名: ")
-        info = Author_query(author)
-        print(info)
+        Author_query(author)
     
     elif choice == "3":
         # 智能推荐功能
@@ -56,9 +53,7 @@ while True:
             "author": input("偏爱作者: "),
             "purpose": input("其它描述（体裁偏好/内容描绘/阅读目的）: ")
         }
-        
-        recommended = Recommend_books(criteria)
-        print(recommended)
+        Recommend_books(criteria)
     elif choice == "0":
         break
     else:

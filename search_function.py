@@ -3,10 +3,14 @@ from camel.agents import ChatAgent
 from model_base import Deepseek_V3
 import requests
 import os
+import json
 import wikipedia
 
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 SEARCH_ENGINE_ID = os.getenv("SEARCH_ENGINE_ID")
+DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
+DEEPSEEK_URL = os.getenv("DEEPSEEK_URL")
+
 model = Deepseek_V3()
 
 def Get(modell,system_msg,output_lan,question,id):
@@ -26,6 +30,49 @@ def Get(modell,system_msg,output_lan,question,id):
                 print("调用 Deepseek-V3 API 失败，若需要继续重试请输入 1，若需要退出此次查询请输入 0")
             else:
                 print("调用 Qwen-VL-72B-Instruct 图像模型 API 失败，若需要继续重试请输入 1，若需要退出此次查询请输入 0")
+            fl=0
+            while True :
+                choice = input("请输入选项数字: ").strip()
+                if choice == "1":
+                    print("正在进行重试...")
+                    break
+                elif choice == '0':
+                    fl=1
+                    break
+                else :
+                    print("无效输入，请重新选择")
+            if fl == 1:
+                return ""
+
+def Getst(modell, system_msg, output_lan, question, id):
+    messages=[]
+    from openai import OpenAI
+    from openai import APIError, OpenAIError
+    if system_msg:
+        messages.append({"role": "system", "content": system_msg})
+    messages.append({"role": "user", "content": question})
+    # output_lan 和 id 在这个版本中同样不直接用于 API 调用
+    while True:
+        try:
+            client = OpenAI(
+                base_url=DEEPSEEK_URL,
+                api_key=DEEPSEEK_API_KEY,
+            )
+            response = client.chat.completions.create(
+                model="deepseek-ai/DeepSeek-V3",
+                messages=messages,
+                stream=True, # 仍然保持流式获取数据，以便可以一块一块地打印
+            )
+            # 迭代响应并直接打印每个块
+            for chunk in response:
+                if chunk.choices and chunk.choices[0].delta.content is not None:
+                    content = chunk.choices[0].delta.content
+                    print(content, end="", flush=True) # 直接打印内容，并使用 end="" 和 flush=True 实现流式效果
+            # 打印一个换行符，以便后续的输出不会紧接着API响应
+            print()
+            return ""
+        except:
+            print("调用 Deepseek-V3 API 失败，若需要继续重试请输入 1，若需要退出此次查询请输入 0")
             fl=0
             while True :
                 choice = input("请输入选项数字: ").strip()
