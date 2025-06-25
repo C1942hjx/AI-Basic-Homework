@@ -28,11 +28,17 @@ def VectorSearch(query,top_k=10,id=0):
 
     return results
 
+import random
+
 def Storagequery(query,top_k=10):
     
-    results=VectorSearch(query,top_k=top_k,id=0)
+    numbers = random.sample(range(12), 5)
 
-    for id in range(1,12):
+    results=VectorSearch(query,top_k=top_k,id=numbers[0])
+
+    for num in range(1,2):
+        id=numbers[num]
+        #print(id)
         results2=VectorSearch(query,top_k=top_k,id=id)
         for i in range(0,top_k) :
             if results2[i]["similarity score"] > results[top_k-1]["similarity score"] :
