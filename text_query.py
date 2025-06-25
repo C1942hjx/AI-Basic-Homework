@@ -33,12 +33,9 @@ def Text_query(user_question):
     return ret
 
 def Text_query1(user_question,text):
-    print("正在进行搜索...")
     
     search_1 = Google_search(user_question,5)
     
-    print("正在整理搜索结果...")
-
     system_msg_1 = "你是一个图书推荐助手，用户给定了书籍信息、参考书籍和网络搜索结果，你需要按照推荐顺序给出10本最符合这些信息的书籍，是否出现原文文段很重要，你可以根据参考书籍和网络搜索结果调整你的答案，输出的书的名字都要用《》括起来，除了按照顺序输出这10本书的名字你不需要输出任何别的信息。"
     question_1 = "书籍信息：" + user_question + "\n\n参考书籍：" + text + "\n\n网络搜索结果：" + search_1
 

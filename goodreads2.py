@@ -35,8 +35,6 @@ def Goodreads2Search(query,top_k=10):
 
     #提取关键信息
 
-    print("正在准备...")
-
     msg1="你是一个书籍推荐助手，给出用户的问题，请提取出关键信息并整理，接下来需要在 Goodreads 向量数据集中进行检索，请用**书籍或作者所在国家的语言**和英语分别输出，同时**不要输出除关键词以外多余的内容干扰向量信息检索**"
     res = Get(model2,msg1,'none',query,2)
     if res == "":
@@ -44,7 +42,7 @@ def Goodreads2Search(query,top_k=10):
 
     #向量数据集搜索
 
-    print("正在进行搜索...")
+    print("正在进行 Goodreads 数据集搜索...")
 
     results_string=Storagequery(res,top_k=top_k)
 
