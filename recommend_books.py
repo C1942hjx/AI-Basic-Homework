@@ -1,9 +1,7 @@
 from camel.agents import ChatAgent
 from model_base import Deepseek_R1,Deepseek_V3
-from goodreads import GoodreadsSearch
 from goodreads2 import Goodreads2Search
 from amazon import AmazonSearch
-from amazon_review import AmazonReviewSearch
 from text_query import Text_query1,Text_query2
 from search_function import Get,Getst
 
@@ -116,7 +114,8 @@ def Recommend_books(criteria,vector_db_block):
             for j in range(ls+1,i):
                 tmp=tmp+res[j]
             tmp=tmp+"》"
-            score[my_map[tmp]]+=0.2
+            if tmp in my_map:
+                score[my_map[tmp]]+=0.2
     
     #   文本是否出现 +0.3
     msg2="给定文本和你需要判断的书籍，你需要对每一本书判断这段文本是不是大概率出现在这本书，如果这段文本在这本书中出现了就输出这本书的名字，最后你只需要输出在需要判断的书籍里并且出现了这段文本的书的名字，输出的书的名字都要用《》括起来，别的信息全都不要输出"
@@ -139,7 +138,8 @@ def Recommend_books(criteria,vector_db_block):
             for j in range(ls+1,i):
                 tmp=tmp+res[j]
             tmp=tmp+"》"
-            score[my_map[tmp]]+=0.3
+            if tmp in my_map:
+                score[my_map[tmp]]+=0.3
     text2=""
     for i in range(0,lenn1):
         text2 = text2 + (str)(lst[i]) + ": " + (str)(score[i])+"\n"
