@@ -59,8 +59,6 @@ def AmazonSearch(query,top_k=10):
 
     #提取关键信息
 
-    print("正在准备...")
-
     msg1="你是一个书籍推荐助手，给出用户的问题，请提取出关键信息并整理，注意书籍名称、书籍特征、书籍类别等信息，接下来需要在 Amazon 向量数据集中进行检索，请用**书籍或作者所在国家的语言**和英语分别输出，同时**不要输出除关键词以外多余的内容干扰向量信息检索**"
     res = Get(model2,msg1,'none',query,2)
     if res == "":
@@ -68,7 +66,7 @@ def AmazonSearch(query,top_k=10):
 
     #向量数据集搜索
 
-    print("正在进行搜索，由于数据较多，这可能需要一些时间...")
+    print("正在进行 Amazon 数据集搜索，由于数据较多，这可能需要一些时间...")
 
     results_string=Storagequery(res,top_k=top_k)
     
