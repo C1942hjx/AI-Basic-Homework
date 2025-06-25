@@ -13,7 +13,7 @@ model1=Deepseek_R1()
 # 对于这10本推荐书籍
 # 文本匹配上了+0.3
 # 作者正确+0.2
-def Recommend_books(criteria):
+def Recommend_books(criteria,vector_db_block):
 #    搜索书籍在库里的匹配信息，选出一部分作为参考书籍
     search_2=""
     search_3=""
@@ -56,12 +56,56 @@ def Recommend_books(criteria):
         sc=0.5*(1.0-(float)(i)/(10.0))
         score.append(sc)
     
+    # print("dbgflag-namelist:")
+    # print(text1)
+
+    msg0="按顺序给定一些书籍，你需要按输入顺序对每一本书简述其题材、风格和作者，对于每一本书输出一行表示对应的尽量简洁的简述，但必须包含前文所述的三个要素，不需要输出编号，只需要输出简述，其他的信息都不需要输出"
+    query = "给定的书籍：" + text1
+    res=Get(model,msg0,'none',query,2)
+    if res == "":
+        return ""
+    # print("dbgflag-summary:")
+    # print(res)
+    # print("try-formatting:")
+
+    res=res+"\n"
+    lenn = len(res)
+    ls=0
+    idx=0
+    for i in range(0,lenn):
+        if res[i] == "\n":
+            tmp=""
+            for j in range(ls,i):
+                tmp=tmp+res[j]
+            ls=i+1
+            # print(tmp)
+            retrieved_records = vector_db_block.retrieve(keyword=tmp, limit=3)
+            coef=10.0
+            dbg_del=0
+            for record in retrieved_records:
+                # print(f"UUID: {record.memory_record.uuid}, Message: {record.memory_record.message.content}, Score: {record.score}")
+                score[idx]+=record.score*coef
+                dbg_del+=record.score*coef
+                coef*=0.7
+            idx+=1
+            # print("dbg_scoredel:")
+            # print(dbg_del)
+            # print("one whole line above")
+
+    # text2=""
+    # for i in range(0,lenn1):
+    #     text2 = text2 + (str)(lst[i]) + ": " + (str)(score[i])+"\n"
+
     # 作者是否正确 +0.2
     msg1="给定作者和你需要判断的书籍，你需要对每一本书判断这位作者是不是大概率写过这本书，如果写过就输出这本书的名字，最后你只需要输出这位作者写过的在需要判断的书籍里的书的名字，输出的书的名字都要用《》括起来，别的信息全都不要输出"
     query = "作者：" + criteria["author"] + "\n需要判断的书籍：" + text1
     res=Get(model,msg1,'none',query,2)
     if res == "":
         return ""
+
+    # print("dbgflag-author:")
+    # print(res)
+    # print("dbgflag-author ends")
 
     lenn = len(res)
     for i in range(0,lenn):
@@ -81,6 +125,10 @@ def Recommend_books(criteria):
     if res == "":
         return ""
 
+    # print("dbgflag-extract:")
+    # print(res)
+    # print("dbgflag-extract ends")
+
     lenn = len(res)
     ls=0
     for i in range(0,lenn):
@@ -95,6 +143,8 @@ def Recommend_books(criteria):
     text2=""
     for i in range(0,lenn1):
         text2 = text2 + (str)(lst[i]) + ": " + (str)(score[i])+"\n"
+
+    # print(text2)
 
     msg3="你是书籍推荐员，给定参考推荐书籍和这些书籍的评分，你需要在推荐书籍的基础上根据书籍描述按照推荐顺序给出5本推荐书籍和理由，你只需要按照顺序输出这些书和理由，别的信息全都不要输出"
     query = "参考推荐书籍及评分："+ text2 + "\n书籍描述："+ str(criteria)

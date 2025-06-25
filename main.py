@@ -7,6 +7,11 @@ from text_query import Text_query
 from author_query import Author_query
 from recommend_books import Recommend_books
 
+from camel.memories.blocks.vectordb_block import VectorDBBlock
+from camel.embeddings import SentenceTransformerEncoder
+vector_db_block = VectorDBBlock(embedding=SentenceTransformerEncoder(model_name='e5-small-v2'))
+from process_memvec import extract_memvec,author_memvec
+
 print("\n您好，我是一个 📚 书籍推荐助手 📚 \n")
 
 while True:
@@ -38,12 +43,26 @@ while True:
         elif fl == 2 :
             print("无效输入，请重新选择")
         else :
-            Text_query(text)
+            books = Text_query(text)
+            if books != "":
+                vector_db_block.write_records(extract_memvec(books))
+            
+            # print("dbgflag-stretval")
+            # print(books)
+            # keyword = "北京折叠"
+            # retrieved_records = vector_db_block.retrieve(keyword=keyword, limit=8)
+            # for record in retrieved_records:
+            #     print(f"UUID: {record.memory_record.uuid}, Message: {record.memory_record.message.content}, Score: {record.score}")
     
     elif choice == "2":
         # 作家查询功能
         author = input("请输入作家姓名: ")
-        Author_query(author)
+        info = Author_query(author)
+        if info != "":
+            vector_db_block.write_records(author_memvec(author))
+
+        # print("dbgflag-stretval")
+        # print(info)
     
     elif choice == "3":
         # 智能推荐功能
@@ -53,7 +72,7 @@ while True:
             "author": input("偏爱作者: "),
             "purpose": input("其它描述（体裁偏好/内容描绘/阅读目的）: ")
         }
-        Recommend_books(criteria)
+        Recommend_books(criteria,vector_db_block)
     elif choice == "0":
         break
     else:
