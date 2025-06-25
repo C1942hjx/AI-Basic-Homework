@@ -52,6 +52,7 @@ def Getst(modell, system_msg, output_lan, question, id):
         messages.append({"role": "system", "content": system_msg})
     messages.append({"role": "user", "content": question})
     # output_lan 和 id 在这个版本中同样不直接用于 API 调用
+    ret_content=""
     while True:
         try:
             client = OpenAI(
@@ -68,9 +69,10 @@ def Getst(modell, system_msg, output_lan, question, id):
                 if chunk.choices and chunk.choices[0].delta.content is not None:
                     content = chunk.choices[0].delta.content
                     print(content, end="", flush=True) # 直接打印内容，并使用 end="" 和 flush=True 实现流式效果
+                    ret_content=ret_content+content
             # 打印一个换行符，以便后续的输出不会紧接着API响应
             print()
-            return ""
+            return ret_content
         except:
             print("调用 Deepseek-V3 API 失败，若需要继续重试请输入 1，若需要退出此次查询请输入 0")
             fl=0
